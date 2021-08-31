@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/pages/post/detail_page.dart';
+import 'package:flutter_blog/pages/post/write_page.dart';
+import 'package:flutter_blog/pages/user/login_page.dart';
+import 'package:flutter_blog/pages/user/user_info.dart';
 import 'package:flutter_blog/size.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -11,7 +16,9 @@ class HomePage extends StatelessWidget {
         itemCount: 3,
         itemBuilder: (context, index) {
           return ListTile(
-            onTap: () {},
+            onTap: () {
+              Get.to(DetailPage(index), arguments: "argument 속성 테스트");
+            },
             title: Text("제목1"),
             leading: Text("1"),
           );
@@ -35,7 +42,23 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(WritePage());
+                },
+                child: Text(
+                  "글쓰기",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+              Divider(),
+              TextButton(
+                onPressed: () {
+                  Get.to(UserInfo());
+                },
                 child: Text(
                   "회원정보보기",
                   style: TextStyle(
@@ -47,7 +70,9 @@ class HomePage extends StatelessWidget {
               ),
               Divider(),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(LoginPage());
+                },
                 child: Text(
                   "로그아웃",
                   style: TextStyle(
