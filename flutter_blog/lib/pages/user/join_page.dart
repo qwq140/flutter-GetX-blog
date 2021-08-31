@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/components/custom_elevated_button.dart';
 import 'package:flutter_blog/components/custom_text_form_field.dart';
+import 'package:flutter_blog/pages/user/login_page.dart';
+import 'package:flutter_blog/util/validator_util.dart';
+import 'package:get/get.dart';
+import 'package:validators/validators.dart';
 
 class JoinPage extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +36,29 @@ class JoinPage extends StatelessWidget {
 
   Widget _joinForm() {
     return Form(
+      key: _formKey,
       child: Column(
         children: [
-          CustomTextFormField(hint: "username"),
-          CustomTextFormField(hint: "password"),
-          CustomTextFormField(hint: "email"),
-          CustomElevatedButton(text: "회원가입"),
+          CustomTextFormField(
+            hint: "username",
+            funValidator: validateUsername(),
+          ),
+          CustomTextFormField(
+            hint: "password",
+            funValidator: validatePassword(),
+          ),
+          CustomTextFormField(
+            hint: "email",
+            funValidator: validateEmail(),
+          ),
+          CustomElevatedButton(
+            text: "회원가입",
+            funPageRoute: () {
+              if (_formKey.currentState!.validate()) {
+                Get.to(LoginPage());
+              }
+            },
+          ),
         ],
       ),
     );
