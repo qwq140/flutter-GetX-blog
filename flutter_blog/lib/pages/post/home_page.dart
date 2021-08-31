@@ -7,8 +7,18 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: _navigation(context),
       appBar: AppBar(),
-      body: Center(
-        child: Text("Home Page"),
+      body: ListView.separated(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () {},
+            title: Text("제목1"),
+            leading: Text("1"),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
       ),
     );
   }
