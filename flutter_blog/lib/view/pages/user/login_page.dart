@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blog/components/custom_elevated_button.dart';
-import 'package:flutter_blog/components/custom_text_form_field.dart';
-import 'package:flutter_blog/pages/user/login_page.dart';
 import 'package:flutter_blog/util/validator_util.dart';
+import 'package:flutter_blog/view/components/custom_elevated_button.dart';
+import 'package:flutter_blog/view/components/custom_text_form_field.dart';
+import 'package:flutter_blog/view/pages/post/home_page.dart';
+import 'package:flutter_blog/view/pages/user/join_page.dart';
 import 'package:get/get.dart';
-import 'package:validators/validators.dart';
 
-class JoinPage extends StatelessWidget {
+class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -20,21 +20,21 @@ class JoinPage extends StatelessWidget {
               alignment: Alignment.center,
               height: 200,
               child: Text(
-                "회원가입 페이지",
+                "로그인 페이지",
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            _joinForm(),
+            _loginForm(),
           ],
         ),
       ),
     );
   }
 
-  Widget _joinForm() {
+  Widget _loginForm() {
     return Form(
       key: _formKey,
       child: Column(
@@ -47,23 +47,19 @@ class JoinPage extends StatelessWidget {
             hint: "password",
             funValidator: validatePassword(),
           ),
-          CustomTextFormField(
-            hint: "email",
-            funValidator: validateEmail(),
-          ),
           CustomElevatedButton(
-            text: "회원가입",
+            text: "로그인",
             funPageRoute: () {
               if (_formKey.currentState!.validate()) {
-                Get.to(LoginPage());
+                Get.to(HomePage());
               }
             },
           ),
           TextButton(
             onPressed: () {
-              Get.to(LoginPage());
+              Get.to(JoinPage());
             },
-            child: Text("로그인 페이지로 이동"),
+            child: Text("아직 회원가입이 안되어 있나요?"),
           ),
         ],
       ),
