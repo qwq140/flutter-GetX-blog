@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/post_controller.dart';
 import 'package:flutter_blog/controller/user_controller.dart';
 
 import 'package:flutter_blog/size.dart';
@@ -10,30 +11,34 @@ import 'package:flutter_blog/view/pages/user/user_info.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  // put 없으면 만들고 있으면 찾기!
-  UserController u = Get.find(); // 이전에 만들었으므로 찾기만 하면 됨.
   @override
   Widget build(BuildContext context) {
+    // put 없으면 만들고 있으면 찾기!
+    UserController u = Get.find(); // 이전에 만들었으므로 찾기만 하면 됨.
+    // 객체 생성 (create, initialize)
+    PostController p = Get.put(PostController());
+    // p.findAll(); // 여기서 실행을 하면 그림그려지지가 않는다.
+
     return Scaffold(
       drawer: _navigation(context),
       appBar: AppBar(
         title: Text("${u.isLogin}"),
       ),
-      body: ListView.separated(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              Get.to(DetailPage(index), arguments: "argument 속성 테스트");
+      body: Obx(() => ListView.separated(
+            itemCount: p.posts.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  Get.to(DetailPage(index), arguments: "argument 속성 테스트");
+                },
+                title: Text("${p.posts[index].title}"),
+                leading: Text("${p.posts[index].id}"),
+              );
             },
-            title: Text("제목1"),
-            leading: Text("1"),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-      ),
+            separatorBuilder: (context, index) {
+              return Divider();
+            },
+          )),
     );
   }
 
