@@ -10,7 +10,10 @@ import 'package:get/get.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  UserController u = Get.put(UserController());
+  final UserController u = Get.put(UserController());
+
+  final _username = TextEditingController();
+  final _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,19 +46,30 @@ class LoginPage extends StatelessWidget {
       child: Column(
         children: [
           CustomTextFormField(
+            controller: _username,
             hint: "username",
             funValidator: validateUsername(),
           ),
           CustomTextFormField(
+            controller: _password,
             hint: "password",
             funValidator: validatePassword(),
           ),
           CustomElevatedButton(
             text: "로그인",
-            funPageRoute: () {
+            funPageRoute: () async {
               if (_formKey.currentState!.validate()) {
                 //Get.to(HomePage());
-                u.login("ssar", "1234");
+                // ssar 공백 -> trim()
+                String token =
+                    await u.login(_username.text.trim(), _password.text.trim());
+                if (token != "-1") {
+                  print("토큰 정상적으로 받음");
+                  Get.to(() => HomePage());
+                } else {
+                  Get.snackbar("로그인 시도", "로그인 실패");
+                  print("토큰 못받음");
+                }
               }
             },
           ),

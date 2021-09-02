@@ -4,16 +4,22 @@ class CustomTextFormField extends StatelessWidget {
   final String hint;
   final funValidator;
   final String? value;
+  final controller;
 
-  const CustomTextFormField(
-      {required this.hint, required this.funValidator, this.value});
+  const CustomTextFormField({
+    required this.hint,
+    required this.funValidator,
+    this.value,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: TextFormField(
-        initialValue: value ?? "",
+        controller: controller, // null도 받을 수 있는 타입이라 required를 안해도 오류 안남
+        initialValue: value,
         validator: funValidator,
         obscureText: hint == "password" ? true : false,
         decoration: InputDecoration(
