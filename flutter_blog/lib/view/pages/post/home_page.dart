@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/user_controller.dart';
 
 import 'package:flutter_blog/size.dart';
+import 'package:flutter_blog/util/jwt.dart';
 import 'package:flutter_blog/view/pages/post/detail_page.dart';
 import 'package:flutter_blog/view/pages/post/write_page.dart';
 import 'package:flutter_blog/view/pages/user/login_page.dart';
@@ -8,11 +10,15 @@ import 'package:flutter_blog/view/pages/user/user_info.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
+  // put 없으면 만들고 있으면 찾기!
+  UserController u = Get.find(); // 이전에 만들었으므로 찾기만 하면 됨.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _navigation(context),
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("${u.isLogin}"),
+      ),
       body: ListView.separated(
         itemCount: 3,
         itemBuilder: (context, index) {
@@ -32,6 +38,8 @@ class HomePage extends StatelessWidget {
   }
 
   Container _navigation(BuildContext context) {
+    UserController u = Get.find();
+
     return Container(
       width: getDrawerWidth(context),
       height: double.infinity,
@@ -72,6 +80,7 @@ class HomePage extends StatelessWidget {
               Divider(),
               TextButton(
                 onPressed: () {
+                  u.logout();
                   Get.to(LoginPage());
                 },
                 child: Text(
