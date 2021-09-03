@@ -15,6 +15,7 @@ class DetailPage extends StatelessWidget {
     //String data = Get.arguments;
     UserController u = Get.find();
     PostController p = Get.find();
+    print("로그인 유저 아이디 : ${u.principal.value.id}");
 
     return Scaffold(
       appBar: AppBar(
