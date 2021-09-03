@@ -29,7 +29,9 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {
-                  Get.to(DetailPage(index), arguments: "argument 속성 테스트");
+                  p.findById(p.posts[index].id!); // ! : null이 절대 아니야
+                  Get.to(DetailPage(p.posts[index].id),
+                      arguments: "argument 속성 테스트");
                 },
                 title: Text("${p.posts[index].title}"),
                 leading: Text("${p.posts[index].id}"),
