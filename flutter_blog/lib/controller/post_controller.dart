@@ -6,11 +6,22 @@ class PostController extends GetxController {
   final PostRepository _postRepository = PostRepository();
   final posts = <Post>[].obs;
   final post = Post().obs;
+
   @override
   void onInit() {
     // 해당 컨트롤러가 초기화 될때 실행됨.
     super.onInit();
     findAll();
+  }
+
+  Future<void> deleteById(int id) async {
+    int result = await _postRepository.deleteById(id);
+    if (result == 1) {
+      //print("서버 쪽 삭제 성공");
+      List<Post> result = posts.value.where((post) => post.id != id).toList();
+      //print(result.length);
+      this.posts.value = result;
+    }
   }
 
   Future<void> findAll() async {
