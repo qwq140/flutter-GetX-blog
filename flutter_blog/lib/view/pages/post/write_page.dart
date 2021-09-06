@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/post_controller.dart';
 
 import 'package:flutter_blog/util/validator_util.dart';
 import 'package:flutter_blog/view/components/custom_elevated_button.dart';
@@ -9,8 +10,12 @@ import 'package:get/get.dart';
 
 class WritePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _title = TextEditingController();
+  final _content = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    //PostController p = Get.find();
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -20,18 +25,22 @@ class WritePage extends StatelessWidget {
           child: ListView(
             children: [
               CustomTextFormField(
+                controller: _title,
                 hint: "Title",
                 funValidator: validateTitle(),
               ),
               CustomTextArea(
+                controller: _content,
                 hint: "Content",
                 funValidator: validateContent(),
               ),
               CustomElevatedButton(
                 text: "글쓰기",
-                funPageRoute: () {
+                funPageRoute: () async {
                   if (_formKey.currentState!.validate()) {
-                    Get.off(HomePage());
+                    await Get.find<PostController>()
+                        .save(_title.text, _content.text);
+                    Get.off(() => HomePage());
                   }
                 },
               ),
