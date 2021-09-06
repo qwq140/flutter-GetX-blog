@@ -14,6 +14,14 @@ class PostController extends GetxController {
     findAll();
   }
 
+  Future<void> updateById(int id, String title, String content) async {
+    Post post = await _postRepository.updateById(id, title, content);
+    if (post.id != null) {
+      this.post.value = post;
+      this.posts.value = this.posts.map((e) => e.id == id ? post : e).toList();
+    }
+  }
+
   Future<void> deleteById(int id) async {
     int result = await _postRepository.deleteById(id);
     if (result == 1) {

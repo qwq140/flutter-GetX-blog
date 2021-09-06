@@ -11,6 +11,7 @@ class UserController extends GetxController {
   void logout() {
     isLogin.value = false;
     jwtToken = null;
+    // Get.storage()에 담으면 휴대폰에 저장하기 때문에 로그인을 유지할 수 있음.(token 유효기간동안)
   }
 
   Future<int> login(String username, String password) async {

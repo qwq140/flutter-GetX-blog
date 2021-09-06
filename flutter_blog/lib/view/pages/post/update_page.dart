@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/post_controller.dart';
 import 'package:flutter_blog/util/validator_util.dart';
 import 'package:flutter_blog/view/components/custom_elevated_button.dart';
 import 'package:flutter_blog/view/components/custom_text_area.dart';
@@ -7,8 +8,14 @@ import 'package:get/get.dart';
 
 class UpdatePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _title = TextEditingController();
+  final _content = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final PostController p = Get.find();
+    _title.text = "${p.post.value.title}";
+    _content.text = "${p.post.value.content}";
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -18,19 +25,21 @@ class UpdatePage extends StatelessWidget {
           child: ListView(
             children: [
               CustomTextFormField(
+                controller: _title,
                 hint: "Title",
                 funValidator: validateTitle(),
-                value: "제목1", // 나중에 서버에서 받아올 값
               ),
               CustomTextArea(
+                controller: _content,
                 hint: "Content",
                 funValidator: validateContent(),
-                value: "내용1" * 20, // 나중에 서버에서 받아올 값
               ),
               CustomElevatedButton(
                 text: "글수정하기",
-                funPageRoute: () {
+                funPageRoute: () async {
                   if (_formKey.currentState!.validate()) {
+                    await p.updateById(
+                        p.post.value.id ?? 0, _title.text, _content.text);
                     Get.back(); // 상태관리 GetX 라이브러리 - Obs
                   }
                 },
