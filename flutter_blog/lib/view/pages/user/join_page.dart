@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/user_controller.dart';
 import 'package:flutter_blog/util/validator_util.dart';
 import 'package:flutter_blog/view/components/custom_elevated_button.dart';
 import 'package:flutter_blog/view/components/custom_text_form_field.dart';
@@ -8,6 +9,11 @@ import 'package:validators/validators.dart';
 
 class JoinPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+  final _email = TextEditingController();
+
+  final UserController u = UserController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,28 +46,37 @@ class JoinPage extends StatelessWidget {
       child: Column(
         children: [
           CustomTextFormField(
+            controller: _username,
             hint: "username",
             funValidator: validateUsername(),
           ),
           CustomTextFormField(
+            controller: _password,
             hint: "password",
             funValidator: validatePassword(),
           ),
           CustomTextFormField(
+            controller: _email,
             hint: "email",
             funValidator: validateEmail(),
           ),
           CustomElevatedButton(
             text: "회원가입",
-            funPageRoute: () {
+            funPageRoute: () async {
               if (_formKey.currentState!.validate()) {
-                Get.to(LoginPage());
+                int result =
+                    await u.join(_username.text, _password.text, _email.text);
+                if (result == 1) {
+                  Get.to(() => LoginPage());
+                } else {
+                  Get.snackbar("회원가입 시도", "회원가입 실패");
+                }
               }
             },
           ),
           TextButton(
             onPressed: () {
-              Get.to(LoginPage());
+              Get.to(() => LoginPage());
             },
             child: Text("로그인 페이지로 이동"),
           ),

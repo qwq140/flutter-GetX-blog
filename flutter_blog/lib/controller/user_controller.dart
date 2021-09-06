@@ -14,6 +14,16 @@ class UserController extends GetxController {
     // Get.storage()에 담으면 휴대폰에 저장하기 때문에 로그인을 유지할 수 있음.(token 유효기간동안)
   }
 
+  Future<int> join(String username, String password, String email) async {
+    User user = await _userRepository.join(username, password, email);
+
+    if (user.id != null) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
   Future<int> login(String username, String password) async {
     User principal = await _userRepository.login(username, password);
 

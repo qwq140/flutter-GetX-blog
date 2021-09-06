@@ -7,4 +7,6 @@ const host = "http://172.30.1.39:8080";
 class UserProvider extends GetConnect {
   // Promise (데이터 약속)
   Future<Response> login(Map data) => post("$host/login", data);
+
+  Future<Response> join(Map data) => post("$host/join", data);
 }

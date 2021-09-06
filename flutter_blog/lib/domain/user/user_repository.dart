@@ -1,4 +1,5 @@
 import 'package:flutter_blog/controller/dto/CMRespDto.dart';
+import 'package:flutter_blog/controller/dto/JoinReqDto.dart';
 import 'package:flutter_blog/controller/dto/LoginReqDto.dart';
 import 'package:flutter_blog/domain/user/user.dart';
 import 'package:flutter_blog/domain/user/user_provider.dart';
@@ -8,6 +9,21 @@ import 'package:get/get.dart';
 // 통신을 호출해서 응답되는 데이터를 예쁘게 가공!! => json => Dart 오브젝트
 class UserRepository {
   final UserProvider _userProvider = UserProvider(); // _ : private
+
+  Future<User> join(String username, String password, String email) async {
+    JoinReqDto joinReqDto = JoinReqDto(username, password, email);
+
+    Response response = await _userProvider.join(joinReqDto.toJson());
+    dynamic body = response.body;
+    CMRespDto cmRespDto = CMRespDto.formJson(body);
+
+    if (cmRespDto.code == 1) {
+      User user = User.formJson(cmRespDto.data);
+      return user;
+    } else {
+      return User();
+    }
+  }
 
   Future<User> login(String username, String password) async {
     LoginReqDto loginReqDto = LoginReqDto(username, password);
