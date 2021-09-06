@@ -11,6 +11,9 @@ import 'package:flutter_blog/view/pages/user/user_info.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     // put 없으면 만들고 있으면 찾기!
@@ -20,11 +23,28 @@ class HomePage extends StatelessWidget {
     // p.findAll(); // 여기서 실행을 하면 그림그려지지가 않는다.
 
     return Scaffold(
+      key: scaffoldKey,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (scaffoldKey.currentState!.isDrawerOpen) {
+            scaffoldKey.currentState!.openEndDrawer();
+          } else {
+            scaffoldKey.currentState!.openDrawer();
+          }
+        },
+        child: Icon(Icons.code),
+      ),
       drawer: _navigation(context),
       appBar: AppBar(
         title: Text("${u.isLogin}"),
       ),
-      body: Obx(() => ListView.separated(
+      body: Obx(
+        () => RefreshIndicator(
+          key: refreshKey,
+          onRefresh: () async {
+            await p.findAll();
+          },
+          child: ListView.separated(
             itemCount: p.posts.length,
             itemBuilder: (context, index) {
               return ListTile(
@@ -40,7 +60,9 @@ class HomePage extends StatelessWidget {
             separatorBuilder: (context, index) {
               return Divider();
             },
-          )),
+          ),
+        ),
+      ),
     );
   }
 
@@ -73,7 +95,9 @@ class HomePage extends StatelessWidget {
               Divider(),
               TextButton(
                 onPressed: () {
-                  Get.to(UserInfo());
+                  //Navigator.pop(context);
+                  scaffoldKey.currentState!.openEndDrawer();
+                  Get.to(() => UserInfo());
                 },
                 child: Text(
                   "회원정보보기",
